@@ -1,0 +1,27 @@
+class.alshifalab.pk {
+	encode gzip zstd
+	import std_log class
+	import std_headers
+
+	# Keep /api prefix when proxying to Django mounted at /api/
+	handle /api/* {
+		reverse_proxy 127.0.0.1:9031 {
+			import std_proxy
+		}
+	}
+
+	# Django admin panel at /django-admin/ (renamed from /admin/ to avoid
+	# conflict with Next.js frontend routes under /admin/*)
+	handle /django-admin/* {
+		reverse_proxy 127.0.0.1:9031 {
+			import std_proxy
+		}
+	}
+
+	# All other routes (including /admin/* frontend pages) go to Next.js
+	handle {
+		reverse_proxy 127.0.0.1:9030 {
+			import std_proxy
+		}
+	}
+}

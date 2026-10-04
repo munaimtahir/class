@@ -1,57 +1,44 @@
-# Multi-Stage Development Roadmap
+# Roadmap
 
-## Stage 1 — Foundation / MVP
-Goal: deliver a working internal tool for timetable-to-Classroom publishing.
+## Stage 1 - MVP publishing foundation (implemented)
+Goal: reliable timetable-to-Classroom publishing with Meet integration.
 
-### Deliverables
-- repo initialized
-- Google OAuth login
-- Google Classroom course fetch
-- session CRUD
-- simple import parser (CSV/Google Sheet/manual)
-- Calendar event + Meet link generation
-- Classroom material creation
-- schedule-or-publish workflow
-- posting log
+Delivered:
+- Google OAuth login with backend-owned tokens
+- Classroom course sync
+- Session CRUD
+- Google Sheet import preview, commit, and promotion flow
+- Meet generation via Calendar API
+- Classroom material publishing
+- Scheduled posting via worker
+- Combined-day preview and publish
+- Posting logs
 
-### Acceptance
-- user can import 1 day timetable
-- preview/edit sessions
-- publish to selected course
-- see success/failure per session
+## Stage 2 - MVP reliability hardening (active)
+Goal: improve repeatability, safety, and observability of timetable operations.
 
-## Stage 2 — Reliability and usability
-Goal: make the MVP safe for repeated weekly use.
+Deliverables:
+- Close remaining test and integration gaps
+- Improve retry/error visibility in publish flows
+- Tighten idempotency semantics for recurring imports and publishes
+- Keep docs aligned with implemented behavior
 
-### Deliverables
-- duplicate detection rules
-- retry failed items
-- topic templates by week/day
-- basic audit trail
-- import validation
-- bulk publish by day/week
-- safer idempotency logic
+## Stage 3A — User Operations and Resolution (official next scope)
+Goal: add a bounded **User Resolution Center** for operational issue handling tied to Google Workspace/Classroom workflows.
 
-### Acceptance
-- repeated import of same timetable does not double-post
-- failed jobs can be retried
-- user can publish a whole day in one action
+Planned deliverables:
+- Structured issue intake with bounded categories
+- Issue list/detail workflow with assignment and collaboration
+- Diagnosis workflow linked to session/publish operational records
+- Resolution and escalation lifecycle with clear status transitions
+- Dashboard views for open/resolved/escalated queues and counts
+- Action logging/auditability for issue-state and resolution actions
 
-## Stage 3 — Operational expansion
-Goal: reduce more manual work.
+## Stage 3B - Directory Management (future adjacent module)
+Goal: add controlled directory governance workflows where needed.
 
-### Deliverables
-- direct Google Sheets sync
-- saved publishing templates
-- subgroup rules
-- role-based access for admin/operators
-- better monitoring dashboard
+## Stage 3C - Enrollment Management (future adjacent module)
+Goal: add bounded enrollment operations for Classroom course membership.
 
-## Stage 4 — Institutional productization
-Goal: make it reusable across departments/institutions.
-
-### Deliverables
-- multi-tenant support
-- faculty-specific publishing rules
-- reusable timetable presets
-- analytics and reporting
+## Stage 3D - Smarter Publishing Controls (future adjacent module)
+Goal: improve publish planning, guardrails, and operator controls without expanding into LMS behavior.

@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-classdb}
+      POSTGRES_USER: ${POSTGRES_USER:-classuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-classpass}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "${BACKEND_BIND_HOST:-127.0.0.1}:${BACKEND_BIND_PORT:-9031}:8000"
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    environment:
+      NEXT_PUBLIC_API_URL: /api
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_BIND_HOST:-127.0.0.1}:${FRONTEND_BIND_PORT:-9030}:3000"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

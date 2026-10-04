@@ -1,122 +1,57 @@
 # Final AI Developer Prompt
 
-Build a production-oriented MVP for **Classroom Schedule Integrator**, a narrow internal web app that converts timetable sessions into scheduled Google Classroom posts with Google Meet links.
+Build and maintain `class` as a focused institutional operations platform.
 
-## Product goal
-Create a reliable internal tool for academic staff to import or enter timetable sessions, review them, generate Meet links through Google Calendar events, publish/schedule Google Classroom materials, and track posting status.
+## Product definition
+- **MVP core (implemented):** timetable/session import, review, Meet generation, Classroom publish/schedule, and publish logging.
+- **Official expansion scope:** **Stage 3A — User Operations and Resolution** via the **User Resolution Center**.
+- **Future adjacent modules (roadmap):** Directory Management, Enrollment Management, Smarter Publishing Controls.
 
-## Scope lock
-### Must build
-- Google OAuth sign-in for approved Workspace users
-- fetch Google Classroom courses user can manage
-- session import via CSV and manual entry
-- optional Google Sheet import stub/interface
-- session preview/edit UI
-- create Calendar events with Meet links when required
-- create Google Classroom Material posts
-- immediate publish or scheduled publish
-- posting log with statuses: draft, queued, published, failed, skipped
-- idempotency / duplicate prevention
-- clean API docs
-- tests for main flows
+This product is operational tooling, not a full LMS and not a generic IT helpdesk.
 
-### Must not build in MVP
-- attendance
-- grading
-- student analytics
-- submissions
-- OCR/image timetable parsing
-- full LMS features
-- parent/student portals
+## MVP baseline to preserve
+- Google OAuth login and backend token handling
+- Classroom course sync
+- Session CRUD
+- Google Sheet import preview/commit/promote flow
+- Meet generation
+- Classroom publish-now/schedule flows
+- Combined-day preview/publish
+- Posting logs and worker execution
 
-## Recommended stack
-- Frontend: Next.js 14+ with TypeScript
-- Backend: Django 5 + DRF
-- DB: PostgreSQL
-- Worker: Celery + Redis
-- Auth: Google OAuth 2.0
-- Integrations: Google Classroom API, Google Calendar API, Google Sheets API
+## Stage 3A target capabilities (User Resolution Center)
+- Issue intake for bounded operational categories
+- Issue list/detail workflow with filters and linked operational context
+- Assignment, comments, diagnostics timeline
+- Resolution and escalation lifecycle with explicit status transitions
+- Dashboard summaries for queue monitoring
+- Action logging/auditability for issue-state and resolution events
+
+## Mandatory scope boundaries
+- In scope: issues tied to Google account readiness, Classroom access/enrollment, course/session mapping, Meet generation, publish outcomes, and related operational blockers.
+- Out of scope: grading, attendance, exams, analytics portals, generic ERP workflows, unrelated IT/helpdesk complaints.
+
+## Safety and control requirements
+- Backend/worker owns all Google write operations.
+- Reuse existing publish/retry safety patterns for issue-triggered operational actions.
+- Keep write paths idempotent and retry-safe.
+- Every high-impact action must produce traceable logs with actor and timestamps.
+- Local DB acts as workflow state; Google remains source of truth.
 
 ## Architecture requirements
-- frontend and backend separated by clean API boundary
-- backend owns all Google API interactions
-- all publish actions logged
-- idempotency key per publishable session
-- dry-run preview before publish
-- use environment variables for secrets
-- no hardcoded course IDs or tokens
+- Keep a single API boundary (web -> backend API -> worker for async writes).
+- Link issue records to existing operational entities where relevant (`user`, `course`, `session`, `post`, `log`).
+- Avoid frontend-managed secrets or direct Google write calls.
 
-## Core entities
-- User
-- WorkspaceConnection
-- CourseMap
-- ImportBatch
-- SessionDraft
-- PublishJob
-- CalendarEventRecord
-- ClassroomPostRecord
-- AuditLog
+## Implementation requirements
+- Add typed models/serializers for issues, categories, assignments, comments, resolutions, attachments, and action logs.
+- Add list/create/view/update/assign/comment/resolve/escalate APIs with strict state validation.
+- Add tests for issue lifecycle, linking, role boundaries, and dashboard summaries.
+- Update docs (`README`, architecture, API, data model, tasks, tests, QA) with each meaningful change.
+- Keep terminology consistent across docs: **User Resolution Center** and **Stage 3A — User Operations and Resolution**.
 
-## API requirements
-Implement endpoints for:
-- auth start/callback/status/logout
-- list connected courses
-- create/list/update/delete session drafts
-- import CSV
-- import Google Sheet metadata stub
-- preview publish plan
-- create publish job
-- execute publish job
-- list publish logs and failures
-- retry failed publish items
-
-## UI requirements
-Pages:
-- login/connect page
-- dashboard
-- course selector
-- import sessions page
-- review sessions page
-- publish planner
-- posting log page
-
-## Publishing logic
-- if `requires_meet = true`, create Calendar event with conference data
-- store Meet URL and calendar event ID
-- create Classroom material under target course with title/description/Meet link
-- scheduled publishing should queue job and execute at intended time
-- duplicate prevention should compare course + date + time + title + subgroup + publish mode hash
-
-## Quality bar
-- typed code
-- clean separation of concerns
-- migrations included
-- seed/demo data for local testing
-- README + setup instructions
-- unit tests + integration tests
-- graceful error handling around Google API failures
-- clear operator messages
-
-## Deliverables
-1. working repo scaffold
-2. backend API
-3. frontend admin panel
-4. worker jobs
-5. DB schema + migrations
-6. tests
-7. setup docs
-8. sample CSV and sample seed data
-
-## TODO checklist
-- [ ] initialize monorepo/repo structure
-- [ ] implement Google auth flow
-- [ ] fetch and display Classroom courses
-- [ ] build session draft data model
-- [ ] build CSV import parser
-- [ ] build session review table/form
-- [ ] implement Calendar event + Meet creation
-- [ ] implement Classroom material posting
-- [ ] implement scheduled publish job
-- [ ] implement posting log and retry flow
-- [ ] add idempotency checks
-- [ ] write tests and setup docs
+## Explicit non-goals
+- Full LMS feature expansion
+- Student/parent portals
+- Generic institutional helpdesk intake
+- Unbounded ERP process orchestration

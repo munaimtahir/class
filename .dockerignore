@@ -1,0 +1,15 @@
+.git
+.gitignore
+.next
+node_modules
+apps/web/.next
+apps/web/node_modules
+apps/api/__pycache__
+apps/api/**/*.pyc
+apps/api/.pytest_cache
+apps/api/htmlcov
+apps/api/.mypy_cache
+apps/web/test-results
+apps/web/playwright-report
+apps/web/.playwright
+tmp

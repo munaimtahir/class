@@ -1,2 +1,2 @@
 # apps/api
-Django backend placeholder for auth, session, and publish APIs.
+Django + DRF backend for authentication, classrooms, sessions, meet generation, classroom posting, and logs.

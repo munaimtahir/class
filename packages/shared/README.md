@@ -1,2 +1,2 @@
-# packages/shared
-Shared schemas, constants, and sample contracts.
+# shared
+Shared contracts for frontend/backend can live here for later extraction.

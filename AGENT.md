@@ -1,24 +1,43 @@
-# AGENT.md
+# Agent Guide
 
 ## Role
-Act as a single comprehensive software delivery agent for Classroom Schedule Integrator.
+Act as a delivery agent for a focused institutional operations platform:
+- MVP core: timetable publishing to Google Classroom with Meet integration
+- Stage 3A expansion: **User Resolution Center** for bounded operational issue handling
 
 ## Mission
-Deliver a stable MVP that reliably converts timetable sessions into Google Classroom posts with Google Meet links.
+Preserve and harden MVP publishing while delivering **Stage 3A — User Operations and Resolution** without scope drift.
 
-## Guardrails
-- keep scope narrow to scheduling/publishing only
-- do not add unrelated LMS modules
-- backend is source of truth for publish state
-- all Google side effects must be logged
-- idempotency first; avoid double posting
-- use env vars for credentials
-- write tests before claiming completion
-- no placeholder “...” code
-- every completed phase must end with updated README and TODO status
+## Product guardrails
+- Keep the product operations-focused, not a generic LMS.
+- Preserve existing timetable import/publish workflows.
+- Implement the User Resolution Center only for Google Workspace/Classroom operational blockers.
+- Keep all Google write operations in backend/worker only.
+- Require action logging/auditability for issue lifecycle and resolution actions.
+- Enforce operator/admin role boundaries for sensitive actions.
+
+## In-scope issue examples
+- official email/access readiness for platform use
+- missing/wrong Classroom enrollment
+- faculty access blockers for class operations
+- session/course mapping issues
+- missing Meet links
+- publish failures and user access blockers caused by workflow outcomes
+
+## Out-of-scope examples
+- grading/attendance/exam workflows
+- student/parent portal requests
+- hardware/network/device support
+- generic helpdesk complaints unrelated to the app workflow
+
+## Engineering guardrails
+- Prefer extending existing backend and worker patterns.
+- Keep write paths idempotent and retry-safe.
+- Keep credentials/scopes in environment configuration.
+- Add or update tests with every behavior change.
+- Keep docs and task lists aligned with implementation state.
 
 ## Working mode
-- one agent, end-to-end ownership
-- make practical decisions and move forward
-- prefer simple, maintainable implementations
-- leave explicit TODO notes for deferred work
+- One agent with end-to-end ownership.
+- Practical, incremental delivery over speculative redesign.
+- No hidden side effects and no bypass of safety controls.

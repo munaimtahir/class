@@ -1,0 +1,49 @@
+from django.contrib import admin
+
+from .models import (
+    ClassroomPost,
+    CommandJob,
+    CommandJobItem,
+    Course,
+    ApprovalRequest,
+    DirectoryAuditLog,
+    DirectoryChangeJob,
+    DirectoryChangeJobItem,
+    DirectoryIssue,
+    DirectorySyncJob,
+    DirectoryTarget,
+    DirectoryUser,
+    DirectoryVerifyJob,
+    DirectoryVerifyRow,
+    EmailTemplateRule,
+    MeetEvent,
+    OnboardingBundle,
+    OrgUnitTemplate,
+    PostLog,
+    ProvisioningRecord,
+    Session,
+    User,
+)
+
+admin.site.register(User)
+admin.site.register(Course)
+admin.site.register(Session)
+admin.site.register(MeetEvent)
+admin.site.register(ClassroomPost)
+admin.site.register(PostLog)
+admin.site.register(DirectoryTarget)
+admin.site.register(OnboardingBundle)
+admin.site.register(CommandJob)
+admin.site.register(CommandJobItem)
+admin.site.register(DirectoryUser)
+admin.site.register(OrgUnitTemplate)
+admin.site.register(EmailTemplateRule)
+admin.site.register(DirectoryIssue)
+admin.site.register(DirectorySyncJob)
+admin.site.register(DirectoryVerifyJob)
+admin.site.register(DirectoryVerifyRow)
+admin.site.register(DirectoryChangeJob)
+admin.site.register(DirectoryChangeJobItem)
+admin.site.register(ProvisioningRecord)
+admin.site.register(ApprovalRequest)
+admin.site.register(DirectoryAuditLog)

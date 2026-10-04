@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+.venv/
+
+# Node
+node_modules/
+.next/
+.next.root-owned/
+.test-results.root-owned/
+out/
+test-results/
+
+# Env
+.env
+.env.*
+!.env.example
+.rnv
+# OS
+.DS_Store
